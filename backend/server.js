@@ -2,26 +2,50 @@ const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
 const chatbotRoutes = require("./Chatbot");
-const { db } = require("./db");  // Import SQLite connection
+const authController = require("./controllers/authcontroller");
+const path = require('path');
+const fs = require('fs');
 require("dotenv").config();
+
+// --- DATABASE CONNECTIONS ---
+const { db } = require("./db");      // 1. SQLite connection (Keep for Quizzes)
+const pool = require("./config/db"); // 2. PostgreSQL connection (For Auth/Users)
 
 const app = express();
 const PORT = process.env.PORT || 3002;
 
-// No MSSQL poolPromise initialization needed for SQLite
-
 app.use(cors());
 app.use(express.json());
 
-const path = require('path');
-const fs = require('fs');
-
+// Serve static files
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Routes
 app.use("/api/chatbot", chatbotRoutes);
 
-// Added modules for file system and path
-// Removed duplicate 'const path = require('path');'
+// Auth routes
+app.post('/api/auth/signup', authController.signup);
+app.post('/api/auth/login', authController.login);
+
+// ---------------------------------------------------------
+// POSTGRESQL CONNECTION TEST (For your Auth/Users DB)
+// ---------------------------------------------------------
+app.get('/test-postgres', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW()');
+    res.json({ 
+      message: '✅ PostgreSQL is Connected!', 
+      serverTime: result.rows[0].now 
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: '❌ PostgreSQL Connection Failed' });
+  }
+});
+
+// ---------------------------------------------------------
+// MAPILLARY TOKEN LOGIC (Existing Code)
+// ---------------------------------------------------------
 
 // Path to token storage file
 const tokenFilePath = path.join(__dirname, 'mapillary_tokens.json');
@@ -158,7 +182,10 @@ app.get("/api/mapillary/token", (req, res) => {
     res.json({ accessToken: mapillaryTokens.access_token });
 });
 
-// New endpoint to get flags and options by continent
+// ---------------------------------------------------------
+// SQLITE FLAGS API (Existing Code for Quizzes)
+// ---------------------------------------------------------
+
 app.get("/api/flags/:continentName", (req, res) => {
     const continentName = req.params.continentName;
 
@@ -288,6 +315,10 @@ app.get("/api/flags/all/:continentName", (req, res) => {
     });
 });
 
+// ---------------------------------------------------------
+// GOOGLE GEMINI API (Existing Code)
+// ---------------------------------------------------------
+
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
@@ -314,6 +345,17 @@ app.post("/summary", async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
+// ---------------------------------------------------------
+// SERVER START & DB CHECK
+// ---------------------------------------------------------
+app.listen(PORT, async () => {
     console.log(`Server running on http://localhost:${PORT}`);
+
+    // Check PostgreSQL connection on startup
+    try {
+        await pool.query('SELECT NOW()');
+        console.log('✅ PostgreSQL is Connected!');
+    } catch (err) {
+        console.error('❌ PostgreSQL Connection Failed:', err.message);
+    }
 });
