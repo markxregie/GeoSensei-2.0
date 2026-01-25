@@ -19,6 +19,11 @@ import NotFound from "./pages/NotFound";
 import Explore from "./pages/Explore";
 import Game from "./components/GameScreen"; // GeoGuessing Game Component
 import BehindTheProject from "./components/BehindTheProject";
+import Login from "./components/authpage/login";
+import Signup from "./components/authpage/signup";
+import ForgotPassword from "./components/authpage/forgotpassword";
+import ResetPassword from "./components/authpage/resetpassword";
+import OTP from "./components/authpage/otp";
 
 function App() {
   const [continent, setContinent] = useState("Asia");
@@ -44,6 +49,21 @@ function App() {
               </>
             }
           />
+
+          {/* Login Page */}
+          <Route path="/login" element={<Login />} />
+
+          {/* Signup Page */}
+          <Route path="/signup" element={<Signup />} />
+
+          {/* Forgot Password Page */}
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+
+          {/* Reset Password Page */}
+          <Route path="/resetpassword" element={<ResetPassword />} />
+
+          {/* OTP Page */}
+          <Route path="/otp" element={<OTP />} />
 
           {/* Continent-Specific Page */}
           <Route path="/newpage/:continent" element={<ContinentPage setContinent={setContinent} />} />
