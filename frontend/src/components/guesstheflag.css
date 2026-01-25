@@ -1,0 +1,141 @@
+.guess-the-flag {
+    font-family: 'Poppins', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    margin-top: 10rem;
+}
+
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    font-size: 1.7rem;
+    cursor: pointer;
+    margin-top: 9rem;
+    margin-left: 4rem;
+}
+
+.guess-the-flag h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #3f3242;
+}
+
+.subtitle {
+    font-size: 1.3rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.flag-box {
+    width: 100%;
+    max-width: 500px;
+    height: 250px;
+    background-color: #F1F0F1;
+    border-radius: 15px;
+    margin: 0 auto 40px;
+}
+.flag-image {
+    width: 100%;  /* Makes the flag responsive */
+    height: 100%; /* Ensures it fits the box */
+    object-fit: contain; /* Prevents distortion */
+    border-radius: 10px; /* Optional: Matches the box's rounded corners */
+}
+
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.option {
+    width: 45%;
+    padding: 15px;
+    background-color: #5a4d61;
+    color: white;
+    border-radius: 30px;
+    text-align: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    
+}
+
+.option.correct {
+    background-color: #28a745 !important; /* Green for correct answer */
+    color: white;
+}
+
+.option.wrong {
+    background-color: #dc3545 !important; /* Red for wrong answer */
+    color: white;
+}
+
+.option:focus {
+    outline: 2px solid #a67db8; /* Light purple outline */
+    box-shadow: 0 0 5px #a67db8; /* Adds a soft glow effect */
+}
+
+
+.option:hover {
+    background-color: #4b3f52;
+}
+
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 0px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.back-button img {
+    width: 30px; /* Adjust the size of the back icon */
+    height: 30px;
+}
+.modal-question-icon {
+    width: 250px; /* Adjust size */
+    height: auto;
+    margin-bottom: 10px;
+    
+}
+.trophy-gif {
+    width: 200px; /* Increased size as requested */
+    height: auto;
+    margin-bottom: 10px;
+    
+}
+.modal-text {
+    color: #3f3242 !important;
+}
+.correct-text {
+    margin-top: 5px;
+    color: #28a745; /* Green for correct answers */
+    font-weight: bold;
+    margin-bottom: -3px;
+}
+
+.wrong-text {
+    margin-top: 3px;
+    color: #dc3545; /* Red for wrong answers */
+    font-weight: bold;
+}
+.correct {
+    font-size: 1rem;
+    color: green;
+    font-weight: bold;
+}
+
+.wrong {
+    font-size: 1rem;
+    color: red;
+    font-weight: bold;
+}

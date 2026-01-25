@@ -1,0 +1,80 @@
+:root {
+    --silver: #C0BCBD;
+    --davys-gray: #4B444C;
+    --davys-gray-2: #5F5965;
+    --english-violet: #5D4A68;
+    --antiflash-white: #F1F0F1;
+  }
+.navbar-brand {
+    margin-left: -235px; /* Adjust as needed */
+    margin-right: 19rem;
+    font-size: 3rem;
+    color:var(--davys-gray);
+    font-weight: 500;
+  }
+  .navbar-brand:hover{
+    color: var(--davys-gray-2);
+  }
+  
+
+  .navbar-nav {
+    margin-left: auto  ;
+    margin-right: 100px;
+    display: flex;
+    gap: 90px; 
+    flex-wrap: nowrap; /* Prevent wrapping */
+    white-space: nowrap;
+  }
+  
+
+  .navbar {
+    background-color:#F1F0F1  !important;
+    padding:  25px; 
+  }
+
+  /* Style the links */
+  .navbar-nav .nav-link {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--davys-gray); 
+    transition: color 0.3s ease-in-out;
+  }
+  
+
+ /* Align button to the far right */
+.custom-button {
+  margin-right: -120px;
+  background-color: var(--english-violet); /* Your color */
+  color: white;
+  border-radius: 30px;
+  padding: 15px 30px;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  transition: background 0.3s ease-in-out;
+}
+
+.custom-button:hover {
+  background-color: var(--davys-gray-2); /* Darker shade */
+}
+
+/* Ensure the navbar collapse uses flexbox */
+.navbar-collapse {
+  display: flex;
+  align-items: center;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: white; /* Ensure it's visible */
+}
+  
+.navbar-nav .nav-link.active {
+    color: var(--english-violet) !important; 
+    font-weight: bold; 
+    border-bottom: 2px solid var(--english-violet); 
+  }
+  

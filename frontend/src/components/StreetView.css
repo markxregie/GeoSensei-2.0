@@ -1,0 +1,38 @@
+/* StreetView.css */
+.streetview-viewer .mapillary-interactive {
+width: 100% !important;
+height: 100% !important;
+position: relative !important;
+}
+
+.streetview-viewer .mapillary-canvas {
+position: relative !important;
+width: 100% !important;
+height: 100% !important;
+}
+.streetview-container {
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.streetview-viewer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+
+.error-message {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: red;
+  background: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  z-index: 1000;
+}

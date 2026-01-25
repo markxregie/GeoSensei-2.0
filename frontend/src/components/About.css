@@ -1,0 +1,74 @@
+#about {
+    padding-top: 150px; /* Adjust based on navbar height */
+}
+.about-block {
+    padding: 10px 20px;
+    text-align: center;
+}
+
+/* Parent container for div1 and div2 */
+.about-parent {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+    gap: 30rem; /* Adds equal spacing */
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+}
+
+/* Div 1 and Div 2 (equal spacing) */
+.about-item p,
+.about-center p {
+    max-width: 400px; /* Adjusted width to maintain six lines */
+    line-height: 1.5rem; /* Adjusted for readability */
+    font-size: 1rem;
+    text-align: justify;
+    overflow: hidden;
+    text-indent: 2rem;
+    -webkit-box-orient: vertical;
+}
+
+/* Div 3 (Centered Below) */
+.about-center {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 10rem;
+}
+
+/* Title */
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--davys-gray);
+    margin-bottom: 15px;
+}
+
+/* Image */
+.about-img {
+    width: 100%;
+    max-width: 250px; /* Adjusted for better fit */
+}
+
+/* Subtitle */
+.about-subtitle {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--davys-gray);
+    margin-top: 10px;
+}
+
+
+.parach {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -5rem; /* Adjust if needed */
+}
+
+.parachute {
+    width: 400px; /* Adjust size as needed */
+    height: auto;
+    margin-bottom: 4rem;
+}

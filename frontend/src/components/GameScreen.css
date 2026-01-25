@@ -1,0 +1,28 @@
+/* GameScreen.css */
+
+.game-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-color: #f4f4f4;
+    padding-top: 5rem; /* Moves the whole container down */
+}
+
+.game-screen-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 5rem; /* Moves the h1 down */
+    margin-bottom: 10px;
+}
+
+.mapillary-container {
+    width: 100%;
+    height: 90vh;
+    background-color: #ddd; /* Light gray background in case Mapillary doesn't load */
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+}

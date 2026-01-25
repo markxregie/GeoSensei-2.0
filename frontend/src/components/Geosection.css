@@ -1,0 +1,97 @@
+.geo-section-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Takes up the full viewport height */
+}
+
+.geo-section-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../images/line.svg'); /* Path to your SVG */
+  background-size: cover;  /* Ensures the SVG covers the entire background */
+  background-position: center; /* Centers the SVG */
+  background-repeat: no-repeat; /* Prevents repeating the SVG */
+  z-index: -1; /* Ensures the background stays behind the content */
+}
+.gif-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+.geo-section-content {
+  position: relative;
+  z-index: 1; /* Keeps the text above the background */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.continent-heading {
+  font-size: 4rem;
+  color: var(--davys-gray);
+  margin-top: 14rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: left;
+  margin-left: -10rem;
+}
+
+.continent-description {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 40px;
+  max-width: 800px;
+  line-height: 1.6;
+  text-align: left;
+  margin-left: -10rem;
+}
+
+.game-cards-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.game-card {
+  margin-top: 1rem;
+  flex: 1 1 calc(25% - 20px);
+  min-width: 250px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.card-image {
+  width: 100%;
+  height: 180px;
+  background-color: var(--davys-gray);
+  border-radius: 20px;
+  margin-bottom: 15px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .game-card {
+    flex: 1 1 calc(50% - 20px);
+  }
+}
+
+@media (max-width: 600px) {
+  .game-card {
+    flex: 1 1 100%;
+  }
+}

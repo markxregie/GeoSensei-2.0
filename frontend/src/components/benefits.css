@@ -1,0 +1,31 @@
+#Beneficiaries {
+    padding-top:160px; /* Adjust based on navbar height */
+}
+.bene-parent {
+    display: flex;
+    justify-content: space-around; /* Creates space between sections */
+    align-items: center;
+    text-align: center;
+    gap: -3rem; /* Adjust spacing as needed */
+    margin-top: 5rem;
+    margin-bottom: 10rem;
+}
+
+.about-item {
+    flex: 1; /* Makes both sections equal width */
+    max-width: 400px; /* Adjust width as needed */
+}
+
+.bene {
+    flex: 0; /* Prevents stretching */
+    display: flex;
+    justify-content: center;
+}
+
+.parachute {
+    width: 300px; /* Adjust size as needed */
+    height: auto;
+}
+.benefts-block{
+    margin-top: 2rem;
+}

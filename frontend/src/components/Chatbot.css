@@ -1,0 +1,261 @@
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatbot-container.minimized {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: #563C5C;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.chatbot-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  background-color: #563C5C;
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  position: relative;
+}
+
+.minimize-button {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.minimize-button img {
+  width: 20px;
+  height: 20px;
+}
+
+.chatbot-messages {
+  flex-grow: 1;
+  padding: 5px;
+  overflow-y: auto;
+  max-height: calc(100% - 90px); /* Adjust for input height */
+  display: flex;
+  flex-direction: column;
+}
+
+
+.chatbot-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+.message-wrapper {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  max-width: 100%;
+}
+
+.user {
+  justify-content: flex-end;
+  margin-left: auto;
+  text-align: left;
+}
+
+.bot {
+  justify-content: flex-start;
+  margin-right: auto;
+  text-align: left;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align properly */
+  max-width: 80%; /* Adjust to prevent messages from being too wide */
+  word-break: break-word; /* Break long words */
+}
+
+
+.user .message-content {
+  align-items: flex-end;
+}
+
+.bot .message-content {
+  align-items: flex-start;
+}
+
+.user .message-text {
+  background-color: #e0f7fa;
+  color: black;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+}
+
+.bot .message-text {
+  background-color: #563C5C;
+  color: #F1F0F1;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+}
+
+.avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin: 0 10px;
+}
+
+.chatbot-input {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  border-top: 1px solid #ccc;
+  padding: 2px;
+  align-items: center;
+  background: white;
+}
+
+.chatbot-input input {
+  flex: 1;
+  border: none;
+  padding: 10px;
+  outline: none;
+  font-size: 16px;
+}
+
+.send-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.send-button img {
+  width: 24px;
+  height: 24px;
+  color: #563C5C;
+}
+
+.message-text {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  max-width: 100%; /* Allow messages to take full width */
+  display: inline-block;
+}
+
+
+.user .message-text,
+.bot .message-text {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  display: block;
+  max-width: 100%; /* Prevent overflow */
+  word-break: break-word; /* Force long words to break */
+}
+
+.chatbot-container.minimized img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: gray;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.bot-gif-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 0;
+}
+
+.suggested-questions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 5px;
+
+
+  justify-content: center;
+}
+
+.suggested-question-button {
+  background-color: #563C5C;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.suggested-question-button:hover:not(:disabled) {
+  background-color: #7a5a7a;
+}
+
+.suggested-question-button:disabled {
+  background-color: #a89ca8;
+  cursor: not-allowed;
+}
+
+.suggested-questions-container {
+  margin-bottom: 1rem;
+}
+
+.suggested-questions-header {
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.geobot-header {
+  margin-top: 1.7rem !important;
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: #563C5C;
+  margin: 0;
+}
+
+.geobot-subtitle {
+  
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-top: 0.2rem;
+  
+}

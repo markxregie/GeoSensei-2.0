@@ -1,0 +1,30 @@
+#Innovation {
+    padding-top:150px; /* Adjust based on navbar height */
+}
+body {
+    overflow-x: hidden;
+}
+.div3 {
+    width: 100%;
+    position: relative;
+    bottom: 0; /* Adjust placement */
+    left: 0;
+}
+
+.city {
+    width: 102%; /* Stretch across full width */
+    height: 50vh;
+    margin-top: -5rem;
+    margin-left: -12px;
+    margin-right: -12px;
+    display: block; /* Removes extra space below image */
+}
+.wave {
+    transform: rotate(180deg); /* Rotates the wave upside down */
+    width: 102%; /* Ensures it stretches properly */
+    display: block; /* Removes any extra spacing */
+    height: 50vh;
+    margin-top: -3rem;
+    margin-left: -12px;
+    margin-right: -12px;
+}

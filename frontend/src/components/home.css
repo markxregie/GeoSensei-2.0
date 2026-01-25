@@ -1,0 +1,93 @@
+.home-container {
+    margin-top: 4rem;
+}
+#home {
+    padding-top: 120px; /* Adjust based on navbar height */
+}
+
+body {
+    overflow-x: hidden;
+}
+.parent {
+    min-height: 60vh;
+    display: flex;
+    align-items: center; /* Align items vertically */
+    justify-content: flex-start; /* Align children to the left */
+    gap: 20px; /* Add some spacing between divs */
+}
+
+.div1 {
+    flex: 1; /* Allow it to take up available space */
+}
+
+.div2 {
+    flex: 1;
+    text-align: left; /* Align text inside .div2 to the left */
+}
+.home-title {
+    font-size: 3rem;  /* Adjust size */
+    font-weight: bold;
+    color: var(--davys-gray);  /* Adjust color */
+    text-transform: capitalize;  /* Optional: Capitalizes first letter */
+    margin-bottom: 15px;
+}
+
+/* Button styling */
+.home-button {
+    background-color: var(--english-violet); /* Your color */
+    color: white;
+    border-radius: 30px;
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    transition: background 0.3s ease-in-out;
+}
+
+.home-button:hover {
+    background-color: #5A4B60;
+}
+.custom-paragraph {
+    font-size: 22px; /* Adjust size as needed */
+    font-weight: 500; /* Optional: Adjust weight */
+    color: #333; /* Optional: Adjust text color */
+}
+.home-image {
+    width: 600px; /* Adjust width */
+    
+    margin-left: 270px;
+}
+
+.div3 {
+    width: 100%;
+    position: relative;
+    bottom: 0; /* Adjust placement */
+    left: 0;
+}
+
+.cloud {
+    width: 104%; /* Stretch across full width */
+    height: 50vh;
+    margin-top: -10rem;
+    margin-left: -12px;
+    margin-right: -13px;
+    display: block; /* Removes extra space below image */
+}
+
+.loading-overlay {
+    position: fixed; /* Cover the entire screen */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    z-index: 999; /* Ensure it appears above other content */
+}
+
+.loading-gif {
+    width: 150px ; /* Adjust size as needed */
+    height: 150px; /* Adjust size as needed */
+}
