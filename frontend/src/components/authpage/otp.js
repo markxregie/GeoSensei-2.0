@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Button,
   TextField,
@@ -10,8 +10,12 @@ import {
   createTheme,
   ThemeProvider,
   CssBaseline,
+  CircularProgress
 } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // --- 1. YOUR PALETTE ---
 const colors = {
@@ -58,8 +62,19 @@ const theme = createTheme({
 });
 
 export default function OTP() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [loading, setLoading] = useState(false);
   const inputRefs = useRef([]);
+  
+  const email = location.state?.email;
+
+  useEffect(() => {
+    if (!email) {
+      toast.error("No email found. Please sign up first.");
+    }
+  }, [email]);
 
   const handleChange = (index, value) => {
     if (value.length > 1) return;
@@ -77,9 +92,31 @@ export default function OTP() {
     }
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const otpCode = otp.join('');
+    if (otpCode.length !== 6) {
+      toast.error("Please enter a complete 6-digit OTP.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await axios.post('http://localhost:3002/api/auth/verify-otp', { email, otp: otpCode });
+      toast.success("Verification successful! Redirecting to login...");
+      setTimeout(() => navigate('/login'), 2000);
+    } catch (err) {
+      const msg = err.response?.data?.message || "Verification failed. Please try again.";
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <ToastContainer position="top-right" autoClose={5000} theme="colored" />
 
       {/* OUTER CONTAINER */}
       <Grid
@@ -136,7 +173,7 @@ export default function OTP() {
               padding: { xs: 3, md: 4 },
             }}
           >
-            <Box component="form" noValidate sx={{ width: '100%', maxWidth: '360px', py: { xs: 3, md: 0 } }}>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: '360px', py: { xs: 3, md: 0 } }}>
 
               <Typography
                 variant="h3"
@@ -186,9 +223,10 @@ export default function OTP() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: colors.englishViolet }}
+                sx={{ mt: 3, mb: 2, backgroundColor: colors.englishViolet, height: 40 }}
+                disabled={loading}
               >
-                Verify OTP
+                {loading ? <CircularProgress size={24} color="inherit" /> : 'Verify OTP'}
               </Button>
 
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>

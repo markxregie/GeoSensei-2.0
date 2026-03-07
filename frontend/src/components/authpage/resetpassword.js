@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   TextField,
@@ -10,8 +10,15 @@ import {
   createTheme,
   ThemeProvider,
   CssBaseline,
+  CircularProgress,
+  Snackbar,
+  Alert,
+  InputAdornment,
+  IconButton
 } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import axios from 'axios';
 
 // --- 1. YOUR PALETTE ---
 const colors = {
@@ -58,6 +65,90 @@ const theme = createTheme({
 });
 
 export default function ResetPassword() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  const [passwords, setPasswords] = useState({ password: '', confirmPassword: '' });
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+  const [token, setToken] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const tokenParam = queryParams.get('token');
+    if (tokenParam) {
+      setToken(tokenParam.trim());
+    } else {
+      setSnackbar({ open: true, message: 'Invalid or missing reset token.', severity: 'error' });
+    }
+  }, [location]);
+
+  const handleChange = (e) => {
+    setPasswords({ ...passwords, [e.target.name]: e.target.value });
+    if (e.target.name === 'password') {
+      setPasswordError('');
+    }
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const passRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{12,16}$/;
+    if (!passRegex.test(passwords.password)) {
+      setPasswordError('Password must be 12-16 characters, with at least one uppercase, one digit, and one special character (!@#$%^&*)');
+      setSnackbar({ open: true, message: 'Please check password requirements', severity: 'warning' });
+      return;
+    }
+
+    if (passwords.password !== passwords.confirmPassword) {
+      setSnackbar({ open: true, message: 'Passwords do not match', severity: 'error' });
+      return;
+    }
+    if (!token) {
+      setSnackbar({ open: true, message: 'Missing reset token', severity: 'error' });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      console.log(`Submitting reset password request with token: '${token}'`);
+      const response = await axios.post('http://localhost:3002/api/auth/reset-password', {
+        token,
+        password: passwords.password
+      });
+      setSnackbar({ open: true, message: response.data.message, severity: 'success' });
+      setTimeout(() => navigate('/login'), 2000);
+    } catch (err) {
+      // --- ENHANCED ERROR LOGGING ---
+      console.error("--- RESET PASSWORD ERROR DETAILS ---");
+      console.error("Full Error Object:", err);
+      console.error("Response Data:", err.response?.data);
+      console.error("Response Status:", err.response?.status);
+      
+      let msg = 'Failed to reset password.';
+      if (err.response) {
+        msg = err.response.status === 404 
+          ? 'Service unavailable. Please try again later.' 
+          : (err.response.data?.message || msg);
+      } else if (err.request) {
+        msg = 'No response from server. Please ensure the backend is running.';
+      }
+      setSnackbar({ open: true, message: msg, severity: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => event.preventDefault();
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -117,7 +208,7 @@ export default function ResetPassword() {
               padding: { xs: 3, md: 4 },
             }}
           >
-            <Box component="form" noValidate sx={{ width: '100%', maxWidth: '360px', py: { xs: 3, md: 0 } }}>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: '360px', py: { xs: 3, md: 0 } }}>
 
               <Typography
                 variant="h3"
@@ -146,9 +237,26 @@ export default function ResetPassword() {
                 fullWidth
                 name="password"
                 label="New Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 autoComplete="new-password"
+                value={passwords.password}
+                onChange={handleChange}
+                error={!!passwordError}
+                helperText={passwordError}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
               <TextField
                 margin="normal"
@@ -156,18 +264,21 @@ export default function ResetPassword() {
                 fullWidth
                 name="confirmPassword"
                 label="Confirm New Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 id="confirmPassword"
                 autoComplete="new-password"
+                value={passwords.confirmPassword}
+                onChange={handleChange}
               />
 
               <Button
                 type="submit"
                 fullWidth
+                disabled={loading}
                 variant="contained"
                 sx={{ mt: 3, mb: 2, backgroundColor: colors.englishViolet }}
               >
-                Reset Password
+                {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Reset Password'}
               </Button>
 
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
@@ -182,6 +293,12 @@ export default function ResetPassword() {
 
         </Paper>
       </Grid>
+
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }} variant="filled">
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </ThemeProvider>
   );
 }

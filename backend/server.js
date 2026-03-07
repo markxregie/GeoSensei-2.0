@@ -12,7 +12,7 @@ const { db } = require("./db");      // 1. SQLite connection (Keep for Quizzes)
 const pool = require("./config/db"); // 2. PostgreSQL connection (For Auth/Users)
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = 3002;
 
 app.use(cors());
 app.use(express.json());
@@ -26,6 +26,9 @@ app.use("/api/chatbot", chatbotRoutes);
 // Auth routes
 app.post('/api/auth/signup', authController.signup);
 app.post('/api/auth/login', authController.login);
+app.post('/api/auth/verify-otp', authController.verifyOtp);
+app.post('/api/auth/forgot-password', authController.forgotPassword);
+app.post('/api/auth/reset-password', authController.resetPassword);
 
 // ---------------------------------------------------------
 // POSTGRESQL CONNECTION TEST (For your Auth/Users DB)

@@ -4,19 +4,31 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
+import { Person } from "react-bootstrap-icons";
 import "./Header.css"; // Import the CSS file
 import loadingGif from "../images/loading.gif"; // Import loading GIF
 
 export default function Appheader() {
   const [loading, setLoading] = useState(false); // Loading state
   const navigate = useNavigate(); // Navigation function
+  const isLoggedIn = !!localStorage.getItem('token'); // Check if user is logged in
 
   const handleNavigation = () => {
-    setLoading(true); // Show loading indicator
-    setTimeout(() => {
-      navigate("/newpage/Asia"); // Navigate after delay
-      setLoading(false); // Hide loading indicator
-    }, 1000); // Simulate 2s loading
+    if (isLoggedIn) {
+      setLoading(true); // Show loading indicator
+      setTimeout(() => {
+        navigate("/newpage/Asia"); // Navigate after delay
+        setLoading(false); // Hide loading indicator
+      }, 1000); // Simulate 2s loading
+    } else {
+      navigate("/login"); // Navigate to login page
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Clear the token
+    navigate("/login"); // Redirect to login page
   };
 
   return (
@@ -32,9 +44,21 @@ export default function Appheader() {
               <Nav.Link href="#Innovation">Innovation</Nav.Link>
               <Nav.Link href="#Beneficiaries">Beneficiaries</Nav.Link>
             </Nav>
-            <Button className="custom-button" onClick={handleNavigation}>
-              Let's Go!
-            </Button>
+            {isLoggedIn ? (
+              <Dropdown>
+                <Dropdown.Toggle variant="" className="custom-button" id="dropdown-basic">
+                  <Person className="me-2" /> Profile
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => navigate("/account")}>Account</Dropdown.Item>
+                  <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            ) : (
+              <Button className="custom-button" onClick={handleNavigation}>
+                Login
+              </Button>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>

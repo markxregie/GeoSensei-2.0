@@ -24,6 +24,7 @@
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.4.0",
     "react-scripts": "^5.0.1",
+    "react-toastify": "^11.0.5",
     "three": "^0.180.0",
     "three.js": "^0.77.1",
     "vanta": "^0.5.24",

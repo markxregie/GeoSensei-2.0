@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   TextField,
@@ -10,8 +10,12 @@ import {
   createTheme,
   ThemeProvider,
   CssBaseline,
+  CircularProgress,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import axios from 'axios';
 
 // --- 1. YOUR PALETTE ---
 const colors = {
@@ -58,6 +62,43 @@ const theme = createTheme({
 });
 
 export default function ForgotPassword() {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!email) {
+      setSnackbar({ open: true, message: 'Please enter your email address', severity: 'warning' });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      console.log("Sending request to http://localhost:3002/api/auth/forgot-password");
+      const response = await axios.post('http://localhost:3002/api/auth/forgot-password', { email });
+      setSnackbar({ open: true, message: response.data.message, severity: 'success' });
+    } catch (err) {
+      console.error("Forgot Password Error:", err);
+      let msg = 'An error occurred. Please try again.';
+      if (err.response) {
+        msg = err.response.status === 404 
+          ? 'Service unavailable. Please try again later.' 
+          : (err.response.data?.message || msg);
+      } else if (err.request) {
+        msg = 'No response from server. Please ensure the backend is running.';
+      }
+      setSnackbar({ open: true, message: msg, severity: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -117,7 +158,7 @@ export default function ForgotPassword() {
               padding: { xs: 3, md: 4 },
             }}
           >
-            <Box component="form" noValidate sx={{ width: '100%', maxWidth: '360px', py: { xs: 3, md: 0 } }}>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: '360px', py: { xs: 3, md: 0 } }}>
 
               <Typography
                 variant="h3"
@@ -148,16 +189,19 @@ export default function ForgotPassword() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoFocus
               />
 
               <Button
                 type="submit"
                 fullWidth
+                disabled={loading}
                 variant="contained"
                 sx={{ mt: 3, mb: 2, backgroundColor: colors.englishViolet }}
               >
-                Send Reset Link
+                {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Send Reset Link'}
               </Button>
 
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
@@ -172,6 +216,12 @@ export default function ForgotPassword() {
 
         </Paper>
       </Grid>
+
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }} variant="filled">
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </ThemeProvider>
   );
 }

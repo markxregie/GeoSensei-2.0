@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   TextField,
@@ -12,10 +12,17 @@ import {
   CssBaseline,
   Checkbox,
   FormControlLabel,
-  Divider
+  Divider,
+  CircularProgress,
+  Snackbar,
+  Alert,
+  InputAdornment,
+  IconButton
 } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
-import { Link as RouterLink } from 'react-router-dom';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // --- 1. YOUR PALETTE ---
 const colors = {
@@ -62,6 +69,75 @@ const theme = createTheme({
 });
 
 export default function Login() {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+  const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    const savedPassword = localStorage.getItem('rememberedPassword');
+    if (savedEmail && savedPassword) {
+      setFormData({ email: savedEmail, password: savedPassword });
+      setRememberMe(true);
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => event.preventDefault();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log("Login form submitted. Data:", formData);
+    setLoading(true);
+    try {
+      console.log("Sending request to http://localhost:3002/api/auth/login");
+      const response = await axios.post('http://localhost:3002/api/auth/login', formData);
+      console.log("Login successful. Response:", response.data);
+      localStorage.setItem('token', response.data.token);
+
+      if (rememberMe) {
+        localStorage.setItem('rememberedEmail', formData.email);
+        localStorage.setItem('rememberedPassword', formData.password);
+      } else {
+        localStorage.removeItem('rememberedEmail');
+        localStorage.removeItem('rememberedPassword');
+      }
+
+      setLoading(false);
+      setSnackbar({ open: true, message: 'Login Successful! Redirecting...', severity: 'success' });
+      setTimeout(() => navigate('/'), 1500);
+    } catch (err) {
+      console.error("Login Error:", err);
+      setLoading(false);
+      let msg = '';
+      if (err.response) {
+        msg = err.response.data?.message || 'Login failed. Please check your credentials.';
+      } else if (err.request) {
+        msg = 'No response from server. Please ensure the backend is running on port 3002.';
+      } else {
+        msg = 'An error occurred: ' + err.message;
+      }
+      setSnackbar({ open: true, message: msg, severity: 'error' });
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -123,7 +199,7 @@ export default function Login() {
               padding: { xs: 3, md: 4 }, 
             }}
           >
-            <Box component="form" noValidate sx={{ width: '100%', maxWidth: '360px', py: { xs: 3, md: 0 } }}>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: '360px', py: { xs: 3, md: 0 } }}>
               
               <Typography 
                 variant="h3" 
@@ -154,6 +230,8 @@ export default function Login() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={formData.email}
+                onChange={handleChange}
                 autoFocus
               />
               <TextField
@@ -162,14 +240,36 @@ export default function Login() {
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 autoComplete="current-password"
+                value={formData.password}
+                onChange={handleChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 1 }}>
                 <FormControlLabel
-                  control={<Checkbox value="remember" sx={{ color: colors.englishViolet, '&.Mui-checked': { color: colors.englishViolet } }} />}
+                  control={
+                    <Checkbox 
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      sx={{ color: colors.englishViolet, '&.Mui-checked': { color: colors.englishViolet } }} 
+                    />
+                  }
                   label={<Typography variant="body2">Remember me</Typography>}
                 />
                 <Link component={RouterLink} to="/forgotpassword" variant="body2" sx={{ color: colors.englishViolet, fontWeight: 'bold', textDecoration: 'none' }}>
@@ -181,9 +281,10 @@ export default function Login() {
                 type="submit"
                 fullWidth
                 variant="contained"
+                disabled={loading}
                 sx={{ mt: 3, mb: 2, backgroundColor: colors.englishViolet }}
               >
-                Sign In
+                {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Sign In'}
               </Button>
 
               <Divider sx={{ my: 2 }}>OR</Divider>
@@ -213,6 +314,12 @@ export default function Login() {
 
         </Paper>
       </Grid>
+
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }} variant="filled">
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </ThemeProvider>
   );
 }

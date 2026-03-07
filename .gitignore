@@ -1,0 +1,39 @@
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build and coverage
+build/
+dist/
+coverage/
+
+# Frontend artifacts
+frontend/build/
+frontend/.cache/
+
+# Backend artifacts
+backend/*.sqlite
+backend/*.db
+backend/mapillary_tokens.json
+
+# Package manager cache
+.pnp
+.pnp.js
