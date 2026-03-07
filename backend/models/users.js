@@ -10,10 +10,16 @@ const User = sequelize.define('User', {
   first_name: {
     type: DataTypes.STRING(100),
     allowNull: false,
+    validate: {
+      is: /^[a-zA-Z\s]+$/i, // Only letters and spaces
+    },
   },
   last_name: {
     type: DataTypes.STRING(100),
     allowNull: false,
+    validate: {
+      is: /^[a-zA-Z\s]+$/i, // Only letters and spaces
+    },
   },
   email: {
     type: DataTypes.STRING(255),
