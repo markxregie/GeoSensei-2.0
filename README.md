@@ -46,8 +46,8 @@ The research and development behind this platform led to an official publication
    ```
 
 ## Developer
-**Mark Regie A. Magtangob** *Full Stack Developer & IT Infrastructure Enthusiast* * [LinkedIn](Insert your LinkedIn URL here)
-* [GitHub](https://github.com/yourusername)
+**Mark Regie A. Magtangob** 
+* [GitHub](https://github.com/markxregie)
 
 ```
 
