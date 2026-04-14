@@ -51,6 +51,3 @@ The research and development behind this platform led to an official publication
 
 ```
 
-
-
-Once your GitHub looks clean, hit "Send" on that email to Ms. Dela Cirna. You did an incredible job today!
