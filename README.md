@@ -49,5 +49,3 @@ The research and development behind this platform led to an official publication
 **Mark Regie A. Magtangob** 
 * [GitHub](https://github.com/markxregie)
 
-```
-
