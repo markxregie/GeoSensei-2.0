@@ -51,11 +51,6 @@ The research and development behind this platform led to an official publication
 
 ```
 
-***
 
-### **Final steps before sending your email:**
-1. Update your `README.md` on GitHub with this text.
-2. Don't forget to replace `yourusername` in the clone link and the Developer section with your actual GitHub username!
-3. Add your real LinkedIn link at the bottom. 
 
 Once your GitHub looks clean, hit "Send" on that email to Ms. Dela Cirna. You did an incredible job today!
